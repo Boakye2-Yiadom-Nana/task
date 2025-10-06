@@ -1,0 +1,37 @@
+<tr id="<%= dom_id(todo_task) %>" class="task-row">
+  <td class="task-cell <%= 'completed' if todo_task.completed? %>">
+    <%= todo_task.title %>
+  </td>
+<td class="task-cell">
+  <% if todo_task.status.present? %>
+    <span class="badge badge-<%= todo_task.status %>"><%= todo_task.status.titleize %></span>
+  <% else %>
+    <span class="badge badge-none">No Status</span>
+  <% end %>
+</td>
+  <td class="task-cell">
+    <%= todo_task.due_date.strftime("%b %d, %Y") if todo_task.due_date %>
+  </td>
+  <td class="task-cell">
+    <%= todo_task.category&.name %>
+  </td>
+  <td class="task-cell">
+    <%= priority_badge(todo_task.priority) %>
+  </td>
+  <td class="task-actions">
+    <div class="action-buttons">
+      <%= link_to toggle_complete_todo_task_path(todo_task), 
+                  data: { turbo_method: :patch },
+                  class: "btn-icon #{'btn-completed' if todo_task.completed?}",
+                  title: todo_task.completed? ? 'Mark as Incomplete' : 'Mark as Complete' do %>
+        <%= todo_task.completed? ? '↩' : '✓' %>
+      <% end %>
+      <%= link_to "👁", todo_task_path(todo_task), class: "btn-icon", title: "View" %>
+      <%= link_to "✎", edit_todo_task_path(todo_task), class: "btn-icon", title: "Edit" %>
+      <%= link_to "🗑", todo_task_path(todo_task), 
+          class: "btn-icon btn-delete",
+          title: "Delete",
+          data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+    </div>
+  </td>
+</tr>

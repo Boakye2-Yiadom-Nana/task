@@ -1,0 +1,57 @@
+<h1 class="page-title">Task Details</h1>
+
+<div class="task-details">
+  <p class="detail-item">
+    <strong class="detail-label">Title:</strong>
+    <span class="detail-value"><%= @todo_task.title %></span>
+  </p>
+
+  <p class="detail-item">
+    <strong class="detail-label">Description:</strong>
+    <span class="detail-value"><%= @todo_task.description %></span>
+  </p>
+
+  <p class="detail-item">
+    <strong class="detail-label">Due Date:</strong>
+    <span class="detail-value"><%= @todo_task.due_date.strftime("%B %d, %Y %H:%M") if @todo_task.due_date %></span>
+  </p>
+
+  <p class="detail-item">
+    <strong class="detail-label">Status:</strong>
+    <span class="detail-value status <%= @todo_task.status.humanize %>"><%= @todo_task.status %></span>
+  </p>
+
+  <p class="detail-item">
+    <strong class="detail-label">Category:</strong>
+    <span class="detail-value"><%= @todo_task.category&.name || "No category" %></span>
+  </p>
+</div>
+
+<!-- 📎 Attachments Section -->
+<div class="attachments">
+  <h2 class="attachments-title">Attachments</h2>
+  <% if @todo_task.attachments.attached? %>
+    <div class="attachments-grid">
+      <% @todo_task.attachments.each do |attachment| %>
+        <div class="attachment-card">
+          <!-- File name always -->
+          <p class="attachment-name"><%= link_to attachment.filename.to_s, url_for(attachment), target: "_blank" %></p>
+
+          <!-- Show preview only for images -->
+          <% if attachment.image? %>
+            <div class="attachment-preview">
+              <%= image_tag url_for(attachment), alt: attachment.filename.to_s, class: "preview-img" %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p><em>No attachments</em></p>
+  <% end %>
+</div>
+
+<div class="actions-bar">
+  <%= link_to "Edit Task", edit_todo_task_path(@todo_task), class: "btn btn-edit" %>
+  <%= link_to "Back to list", todo_tasks_path, class: "btn btn-secondary" %>
+</div>

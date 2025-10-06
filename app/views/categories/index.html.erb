@@ -1,0 +1,33 @@
+<h1 class="page-title">Categories</h1>
+
+<div class="actions-bar">
+  <%= link_to 'New Category', new_category_path, class: "btn btn-primary" %>
+  <%= link_to "Back to list", todo_tasks_path, class: "btn btn-secondary" %>
+</div>
+
+<table class="categories-table">
+  <thead>
+    <tr>
+      <th class="table-header">Name</th>
+      <th class="table-header">Description</th>
+      <th class="table-header">Tasks Count</th>
+      <th class="table-header">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @categories.each do |category| %>
+      <tr class="category-row">
+        <td class="category-cell"><%= category.name %></td>
+        <td class="category-cell"><%= category.description %></td>
+        <td class="category-cell"><%= category.todo_tasks.count %></td>
+        <td class="category-actions">
+          <%= link_to 'View', category_path(category), class: "btn btn-view" %>
+          <%= link_to 'Edit', edit_category_path(category), class: "btn btn-edit" %>
+          <%= link_to 'Delete', category_path(category),
+              class: "btn btn-delete",
+              data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
